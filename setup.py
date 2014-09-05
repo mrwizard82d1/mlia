@@ -12,5 +12,5 @@ setup(
     license='LICENSE.txt',
     description='Useful mlia stuff.',
     long_description=open('README.txt').read(),
-    install_requires=[],
+    install_requires=['numpy',],
     )
