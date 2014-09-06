@@ -36,6 +36,7 @@ def classify0(to_classify, training_examples, labels, k):
 
 # Utility functions.
 
+
 def create_data_set():
     """Create a data set to use in testing?"""
     group = array([[1.0, 1.1], [1.0, 1.0], [0, 0], [0, 0.1]])
@@ -51,7 +52,27 @@ def file2matrix(filename):
         all_lines = [l.strip() for l in raw_all_lines]
         records = zeros((len(all_lines), 3))
         field_values = [l.split('\t') for l in all_lines]
-        labels = [rv[-1] for rv in field_values]
+        labels = [['didntLike', 'smallDoses', 'largeDoses'].index(rv[-1])
+                  for rv in field_values]
         for i in range(len(field_values)):
             records[i,:] = field_values[i][:3]
         return records, labels
+
+
+def auto_norm(records):
+    """Normalize all fields in records to the range [0, 1]."""
+    # Calculate the minimum and maximum along the zeroth dimension.
+    min_values = records.min(0)
+    max_values = records.max(0)
+
+    normal_ranges = max_values - min_values
+    result = zeros(shape(records))
+
+    # Normalize the data by taking all differences from minimum, and then
+    # dividing those differences by the normal_ranges.
+    m = records.shape[0]
+    result = records - tile(min_values, (m, 1))
+    result = result / tile(normal_ranges, (m, 1))
+    return result, normal_ranges, min_values
+
+
