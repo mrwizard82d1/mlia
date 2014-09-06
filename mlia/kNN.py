@@ -4,13 +4,6 @@ from numpy import *
 __author__ = 'l.jones'
 
 
-def create_data_set():
-    """Create a data set to use in testing?"""
-    group = array([[1.0, 1.1], [1.0, 1.0], [0, 0], [0, 0.1]])
-    labels = ['A', 'A', 'B', 'B']
-    return group, labels
-
-
 def classify0(to_classify, training_examples, labels, k):
     """Classify to_classify using training_examples and labels."""
 
@@ -39,3 +32,26 @@ def classify0(to_classify, training_examples, labels, k):
 
     # and return its label.
     return sorted_votes[0][0]
+
+
+# Utility functions.
+
+def create_data_set():
+    """Create a data set to use in testing?"""
+    group = array([[1.0, 1.1], [1.0, 1.0], [0, 0], [0, 0.1]])
+    labels = ['A', 'A', 'B', 'B']
+    return group, labels
+
+
+def file2matrix(filename):
+    """Read a file into a (numpy) matrix."""
+
+    with open(filename) as in_file:
+        raw_all_lines = in_file.readlines()
+        all_lines = [l.strip() for l in raw_all_lines]
+        records = zeros((len(all_lines), 3))
+        field_values = [l.split('\t') for l in all_lines]
+        labels = [rv[-1] for rv in field_values]
+        for i in range(len(field_values)):
+            records[i,:] = field_values[i][:3]
+        return records, labels
