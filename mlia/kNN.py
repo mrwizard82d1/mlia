@@ -35,3 +35,30 @@ def classify0(to_classify, instances, labels, k):
 
     # And return the class with the largest "votes"
     return sorted_class_count[0][0]
+
+
+def file2matrix(filename):
+    """"Parses data contained in (a tab-delimited) filename into a set of labeled instances."""
+
+    with open(filename) as data_file:
+        instances_lines = data_file.readlines()
+
+    # Initialize empty values to return (hard-coded for 3 features)
+    feature_count = 3
+    instances = zeros((len(instances_lines), feature_count))
+    labels = []
+
+    for (i, instance_line) in zip(range(len(instances_lines)), instances_lines):
+        instance_line.strip()
+        feature_values = instance_line.strip().split('\t')
+        instances[i, :] = feature_values[:feature_count]
+        labels.append(feature_values[-1])
+
+    return instances, labels
+
+
+def labels2integers(labels):
+    """Convert the (datingTestSet) labels into integers."""
+
+    label_map = {'didntLike': 0, 'smallDoses': 1, 'largeDoses': 2}
+    return [label_map[l] for l in labels]
