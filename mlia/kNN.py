@@ -62,3 +62,16 @@ def labels2integers(labels):
 
     label_map = {'didntLike': 0, 'smallDoses': 1, 'largeDoses': 2}
     return [label_map[l] for l in labels]
+
+def auto_norm(data_set):
+    """Normalizes all the values in data_set to the range [0, 1]."""
+
+    max_values = data_set.max(0) # 0 indicates "by-column"
+    min_values = data_set.min(0)
+
+    m = data_set.shape[0]
+    normalized_data_set = data_set - tile(min_values, (m, 1))
+    ranges = max_values - min_values
+    normalized_data_set /= tile(ranges, (m, 1))
+
+    return normalized_data_set, ranges, min_values

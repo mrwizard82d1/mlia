@@ -12,7 +12,7 @@ def test_dating_classifier():
 
     ho_ratio = 0.10
     dating_data_set, dating_labels = \
-        mlia.kNN.file2matrix('etc/datingTestSet.txt')
+        mlia.kNN.file2matrix('../etc/datingTestSet.txt')
     normalized_dating, dating_ranges, dating_minimums = \
         mlia.kNN.auto_norm(dating_data_set)
     m = normalized_dating.shape[0]
@@ -23,7 +23,7 @@ def test_dating_classifier():
         mlia.kNN.classify0(normalized_dating[i,:],
                            normalized_dating[test_vector_count:m, :],
                            dating_labels[test_vector_count:m], 3)
-        print 'Predicted %d, actual %d' % (classification_result,
+        print 'Predicted %s, actual %s' % (classification_result,
                                            dating_labels[i])
         if classification_result != dating_labels[i]:
             error_count += 1
