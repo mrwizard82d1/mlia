@@ -22,7 +22,7 @@ def classify_person():
 
     # Get the data
     dating_data_set, dating_labels = \
-        mlia.kNN.file2matrix('etc/datingTestSet.txt')
+        mlia.kNN.file2matrix('../etc/datingTestSet.txt')
     normal_dating, dating_ranges, dating_minimums = \
         mlia.kNN.auto_norm(dating_data_set)
 
@@ -35,7 +35,7 @@ def classify_person():
     # Print the results
     resulting_message = ['not at all', 'in small doses', 'in large doses']
     print 'You will probably like this person: %s.' % \
-          resulting_message[classification]
+          resulting_message[mlia.kNN.labels2integers([classification])[0]]
 
 
 if __name__ == '__main__':

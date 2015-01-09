@@ -63,6 +63,7 @@ def labels2integers(labels):
     label_map = {'didntLike': 0, 'smallDoses': 1, 'largeDoses': 2}
     return [label_map[l] for l in labels]
 
+
 def auto_norm(data_set):
     """Normalizes all the values in data_set to the range [0, 1]."""
 
