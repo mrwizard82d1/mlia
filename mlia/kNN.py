@@ -76,3 +76,14 @@ def auto_norm(data_set):
     normalized_data_set /= tile(ranges, (m, 1))
 
     return normalized_data_set, ranges, min_values
+
+
+def img2vector(infile):
+    """Convert an image stored on infile to a vector."""
+    result = zeros((1, 1024))
+    content_lines = infile.readlines()
+    text_content = ''.join([l.strip() for l in content_lines])
+    int_content = [int(i) for i in text_content]
+    for i in range(len(int_content)):
+        result[0, i] = int_content[i]
+    return result
