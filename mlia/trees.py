@@ -1,12 +1,18 @@
 """Functions for decision trees."""
 
 import math
+import operator
 
 __author__ = 'l.jones'
 
 
-def increment_label_count(label_counts, instance):
+def increment_instance_label_count(label_counts, instance):
     label = instance[-1]
+    label_counts[label] = label_counts.get(label, 0) + 1
+    return label_counts
+
+
+def increment_label_count(label_counts, label):
     label_counts[label] = label_counts.get(label, 0) + 1
     return label_counts
 
@@ -16,7 +22,7 @@ def calculate_shannon_entropy(instances):
 
     count = len(instances)
     label_counts = {}
-    reduce(increment_label_count, instances, label_counts)
+    reduce(increment_instance_label_count, instances, label_counts)
 
     result = 0.0
     for label in label_counts:
@@ -72,3 +78,43 @@ def choose_feature_to_split(instances):
 
     return selected_feature
 
+
+def plurality_vote(labels):
+    """Choose the most frequent label in labels."""
+
+    popular_labels = {}
+    reduce(increment_label_count, labels, popular_labels)
+
+    sorted_labels = sorted(popular_labels.iteritems(), key=operator.itemgetter(1), reverse=True)
+
+    return sorted_labels[0][0]
+
+
+def create_tree(instances, feature_headers):
+    """Create a decision tree of instances with feature_labels."""
+
+    # if all instances labels are the same, return the label
+    labels = [instance[-1] for instance in instances]
+    if labels.count(labels[0]) == len(labels):
+        return labels[0]
+
+    # If I have no more features upon which to split the instances,
+    # take a vote.
+    if len(instances[0]) == 1:
+        return plurality_vote(labels)
+
+    # Create the root node
+    split_feature = choose_feature_to_split(instances)
+    split_feature_label = feature_headers[split_feature]
+    del(feature_headers[split_feature])
+    result = {split_feature_label:{}}
+
+    # And recursively build trees without split_feature
+    unique_feature_values = set([instance[split_feature] for instance in instances])
+    for feature_value in unique_feature_values:
+        sub_feature_headers = feature_headers[:]
+        result[split_feature_label][feature_value] = \
+            create_tree(split_data_set(instances, split_feature, feature_value), sub_feature_headers)
+
+    # Finally, return the tree.
+    return result
