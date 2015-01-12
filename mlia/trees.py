@@ -118,3 +118,19 @@ def create_tree(instances, feature_headers):
 
     # Finally, return the tree.
     return result
+
+def classify(decision_tree, feature_labels, to_classify):
+    """Classify to_classify using feature_labels of decision_tree."""
+
+    root_feature_name = decision_tree.keys()[0]
+    children = decision_tree[root_feature_name]
+    feature_index = feature_labels.index(root_feature_name)
+
+    for child in children:
+        if to_classify[feature_index] == child:
+            if type(children[child]).__name__ == 'dict':
+                label = classify(children[child], feature_labels, to_classify)
+            else:
+                label = children[child]
+
+    return label
