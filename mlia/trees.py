@@ -2,6 +2,7 @@
 
 import math
 import operator
+import pickle
 
 __author__ = 'l.jones'
 
@@ -134,3 +135,17 @@ def classify(decision_tree, feature_labels, to_classify):
                 label = children[child]
 
     return label
+
+
+def store_tree(decision_tree, filename):
+    """Store decision_tree in the file named filename."""
+
+    with open(filename, 'w') as out_file:
+        pickle.dump(decision_tree, out_file)
+
+
+def load_tree(filename):
+    """Return a decision tree loaded from filename."""
+
+    with open(filename) as in_file:
+        return pickle.load(in_file)
