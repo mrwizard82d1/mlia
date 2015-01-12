@@ -58,6 +58,8 @@ def count_tree_depth(decision_tree):
 def plot_mid_text(center_point, parent_point, text_string):
     """Plot text_string midway between center_point and parent_point."""
 
+    print("text_string=%s" % text_string)
+
     x_midpoint = (parent_point[0] - center_point[0]) / 2.0 + center_point[0]
     y_midpoint = (parent_point[1] - center_point[1]) / 2.0 + center_point[1]
 
@@ -66,6 +68,8 @@ def plot_mid_text(center_point, parent_point, text_string):
 
 def plot_tree(decision_tree, parent_point, node_text):
     """Plot decision_tree beginning at parent_point with initial node_text."""
+
+    print("node_text=%s" % node_text)
 
     count_leafs = count_tree_leafs(decision_tree)
     root_feature_name = decision_tree.keys()[0]
@@ -84,7 +88,7 @@ def plot_tree(decision_tree, parent_point, node_text):
         else:
             plot_tree.x_offset += 1.0 / plot_tree.total_width
             plot_node(children[child_feature_name], (plot_tree.x_offset, plot_tree.y_offset), center_point, leaf_node)
-            plot_mid_text((plot_tree.x_offset, plot_tree.y_offset), center_point, str(root_feature_name))
+            plot_mid_text((plot_tree.x_offset, plot_tree.y_offset), center_point, str(child_feature_name))
 
     plot_tree.y_offset += 1.0 / plot_tree.total_depth
 
